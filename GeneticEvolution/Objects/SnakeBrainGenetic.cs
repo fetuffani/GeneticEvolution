@@ -29,7 +29,7 @@ namespace NeuroEvolution
 		{
 			if (Network == null)
 			{
-				Network = new ActivationNetwork(new BipolarSigmoidFunction(), Snake.FoodSensorsCount, 4, 4);
+				Network = new ActivationNetwork(new BipolarSigmoidFunction(), WorldScene.NeuralNetworkShape[0], WorldScene.NeuralNetworkShape.Skip(1).ToArray());
 				// Nw = (I+1)*H1 +(H1+1)*H2 +(H2+1)*O
 				// I = inputs
 				// H1 = neurons in hidden layer 1
@@ -37,9 +37,22 @@ namespace NeuroEvolution
 				// O = Number of outputs
 				// Nw = (5+1)*0 + (0+1)*0 + (5+1)*4 = 24 // 5in 4out
 				// Nw = (5+1)*4 + (4+1)*0 + (4+1)*4 = 44 // 5in 1hl4 4out
-				// Nw = (11+1)*4 + (4+1)*0 + (4+1)*4 = 68 // 68in 1hl4 4out
+				// Nw = (11+1)*4 + (4+1)*0 + (4+1)*4 = 68 // 11in 1hl4 4out
 
-				SetNetworkWeights(GetCurrentGene(GeneticEvolution.Engine));
+				var dna = GetCurrentGene();
+				SetNetworkWeights(dna);
+				//float scale = (float)dna.Genes[scene.NeuralNetworkWeightsCount - 1 + 0];
+				//if (scale < 0.4) scale = 0.4f;
+				//if (scale > 0.6) scale = 0.6f;
+				//Snake.SetScale(scale);
+
+				//int div = scene.NeuralNetworkWeightsCount / 3;
+				//Color c = new Color(
+				//	(int)Math.Max((dna.Genes[div*0] * 255), 128),
+				//	(int)Math.Max((dna.Genes[div*1] * 255), 128),
+				//	(int)Math.Max((dna.Genes[div*2] * 255), 128)
+				//	);
+				//Snake.Color = c;
 			}
 
 			if (engine.KeyState.GetPressedKeys().Length > 0)
@@ -85,6 +98,8 @@ namespace NeuroEvolution
 					{
 						coefs.Add(weig);
 					}
+
+					coefs.Add(((ActivationNeuron)neur).Threshold);
 				}
 			}
 
@@ -93,6 +108,11 @@ namespace NeuroEvolution
 
 		private void SetNetworkWeights(DNA<double> dna)
 		{
+			WorldScene scene = Extensions.GetWorldScene();
+
+			// Get only the network weights
+			double[] genes = dna.Genes.Take(scene.NeuralNetworkWeightsCount).ToArray();
+
 			int index = 0;
 			foreach (var layer in Network.Layers)
 			{
@@ -100,14 +120,18 @@ namespace NeuroEvolution
 				{
 					for (int i = 0; i < neur.Weights.Length; i++)
 					{
-						neur.Weights[i] = dna.Genes[index];
-						index++;
+						neur.Weights[i] = genes[index++];
 					}
+
+					((ActivationNeuron)neur).Threshold = genes[index++];
 				}
 			}
+
+			if (index != scene.NeuralNetworkWeightsCount)
+				throw new Exception("An error ocurred while retrieving the network weights!");
 		}
 
-		private DNA<double> GetCurrentGene(EvoEngine engine)
+		private DNA<double> GetCurrentGene()
 		{
 			WorldScene scene = Extensions.GetWorldScene();
 			DNA<double> dna = scene.GenePool.Population[CurrentDNA];

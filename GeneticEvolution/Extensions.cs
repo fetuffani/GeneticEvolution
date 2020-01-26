@@ -191,5 +191,33 @@ namespace NeuroEvolution
 				(int)(basecolor.B * (1.0f - v)) + (int)(mixcolor.B * (v))
 				);
 		}
+
+		/// <summary>
+		/// Calculate the number of weights in the Neural Network based on the shape
+		/// </summary>
+		/// <param name="shape">the shape array, including the inputs and outputs</param>
+		/// <returns></returns>
+		internal static int NeuralNetworkWeightCount(int[] shape)
+		{
+			// Nw = (I+1)*H1 +(H1+1)*H2 +(H2+1)*O
+			// I = inputs
+			// H1 = neurons in hidden layer 1
+			// H2 = neurons in hidden layer 2
+			// O = Number of outputs
+			// Nw = (5+1)*0 + (0+1)*0 + (5+1)*4 = 24 // 5in 4out
+			// Nw = (5+1)*4 + (4+1)*0 + (4+1)*4 = 44 // 5in 1hl4 4out
+			// Nw = (11+1)*4 + (4+1)*0 + (4+1)*4 = 68 // 11in 1hl4 4out
+			// Nw = (11+1)*5 + (5+1)*4 + (4+1)*4 = 104// 11in 1hl5 2hl4 4out
+			int count = 0;
+
+			for (int i = 0; i < shape.Length - 2; i++)
+			{
+				count += (shape[i] + 1) * shape[i + 1];
+			}
+
+			count += (shape[shape.Length - 2] + 1) * shape[shape.Length - 1];
+
+			return count;
+		}
 	}
 }

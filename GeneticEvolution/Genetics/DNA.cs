@@ -6,7 +6,7 @@ interface IDNA
 
 }
 
-public class DNA<T> : IDNA
+class DNA<T> : IDNA
 {
 	public T[] Genes { get; private set; }
 	public double Fitness { get; set; }

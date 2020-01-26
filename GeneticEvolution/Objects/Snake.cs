@@ -14,13 +14,13 @@ namespace NeuroEvolution
 		/// How many food sensors the snake will have
 		/// Sensors are not straight line but a wide sensor
 		/// </summary>
-		public static int FoodSensorsCount = 11;
+		public static int FoodSensorsCount = WorldScene.NeuralNetworkShape[0];
 
 		/// <summary>
 		/// How wide the sensors will sense
 		/// (in radians)
 		/// </summary>
-		public static float FoodSensorsSpread = ((float)Math.PI/180.0f) * 180.0f;
+		public static float FoodSensorsSpread = ((float)Math.PI/180.0f) * 90.0f;
 
 		public double Energy;
 
@@ -33,7 +33,7 @@ namespace NeuroEvolution
 				return Extensions.MixColor(basecolor, Color.Brown, Extensions.SigmoidFunctionDiffNormalized((float)Energy));
 			}
 
-			set => base.Color = value;
+			set => basecolor = value;
 		}
 
 		public Snake(ContentManager content) : base(content)
@@ -93,12 +93,19 @@ namespace NeuroEvolution
 				if (entity == this) continue;
 				if (entity.GetType() != typeof(Food)) continue;
 
-				if (Extensions.GetVectorDistance(Location, entity.Location) < 10)
+				if (Extensions.GetVectorDistance(Location, entity.Location) < 20)
 				{
-					entity.SetRandomLocation();
-					if (Brain.GetType() == typeof(SnakeBrainGenetic))
-					scene.GenePool.Population[((SnakeBrainGenetic)Brain).CurrentDNA].Fitness++;
-					Energy += 2;
+					// in order to eat, the snake must face it
+					float angletofood = (float)Math.Atan2(entity.Location.Y - Location.Y, entity.Location.X - Location.X) - VelocityRotation;
+					float minangle = -FoodSensorsSpread;
+					float maxangle = +FoodSensorsSpread;
+					if (angletofood > minangle && angletofood < maxangle)
+					{
+						entity.SetRandomLocation();
+						if (Brain.GetType() == typeof(SnakeBrainGenetic))
+							scene.GenePool.Population[((SnakeBrainGenetic)Brain).CurrentDNA].Fitness++;
+						Energy += 2;
+					}
 				}
 			}
 		}

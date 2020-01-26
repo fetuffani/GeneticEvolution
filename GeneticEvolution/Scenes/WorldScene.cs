@@ -16,9 +16,13 @@ namespace NeuroEvolution
 		SpriteBatch spriteBatch;
 
 		List<IEntity> world = new List<IEntity>();
-		public List<IEntity> World { get => world; }
+		public List<IEntity> World => world;
 
-		SpriteFont Arial;
+		//The shape includes the number of snake sensors and the output
+		public static int[] NeuralNetworkShape = { 10,4,4 };
+		public int NeuralNetworkWeightsCount;
+
+		public int AdditionalGenes = 0;
 
 
 		public GeneticAlgorithm<double> GenePool;
@@ -28,6 +32,7 @@ namespace NeuroEvolution
 		public WorldScene(EvoEngine engine) : base(0, false, false, false)
 		{
 			this.engine = engine;
+			this.NeuralNetworkWeightsCount = Extensions.NeuralNetworkWeightCount(NeuralNetworkShape);
 		}
 
 		public override bool Draw()
@@ -180,7 +185,7 @@ namespace NeuroEvolution
 
 			GenePool = new GeneticAlgorithm<double>(
 				10, //Population size
-				68, //DNA size, calculated by the network weights
+				NeuralNetworkWeightsCount + AdditionalGenes, //DNA size, calculated by the network weights plus the additional genes
 				Extensions.Random,
 				getRandomGene,
 				5, //Elitism

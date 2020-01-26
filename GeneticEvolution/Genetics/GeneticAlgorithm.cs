@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-public class GeneticAlgorithm<T>
+class GeneticAlgorithm<T>
 {
 	public List<DNA<T>> Population { get; private set; }
 	public int Generation { get; private set; }
@@ -71,7 +71,9 @@ public class GeneticAlgorithm<T>
 
 				DNA<T> child = parent1.Crossover(parent2);
 
-				child.Fitness = (parent1.Fitness + parent2.Fitness) / 2;
+				// Just for visual comparisson, no effects on the algorithm
+				// as it will be replaced below
+				child.Fitness = (parent1.Fitness + parent2.Fitness) / 2; 
 
 				child.Mutate(MutationRate);
 
