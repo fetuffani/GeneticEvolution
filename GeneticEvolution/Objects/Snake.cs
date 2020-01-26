@@ -184,6 +184,7 @@ namespace NeuroEvolution
 						float actv = (float)Math.Sqrt(Extensions.SigmoidFunctionDiffNormalized(distance / 100.0f));
 						if (activation[i] < actv)
 							activation[i] = actv;
+
 					}
 				}
 
