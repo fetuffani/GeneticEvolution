@@ -8,6 +8,11 @@ using System.Threading.Tasks;
 
 namespace NeuroEvolution
 {
+	/// <summary>
+	/// Used to safely convert generic types
+	/// </summary>
+	/// <typeparam name="TIn">input type</typeparam>
+	/// <typeparam name="TOut">output type</typeparam>
 	public sealed class BoxingSafeConverter<TIn, TOut>
 	{
 		public static readonly BoxingSafeConverter<TIn, TOut> Instance = new BoxingSafeConverter<TIn, TOut>();
@@ -32,8 +37,16 @@ namespace NeuroEvolution
 		}
 	}
 
+	/// <summary>
+	/// Extension methods
+	/// </summary>
 	class Extensions
 	{
+		/// <summary>
+		/// Get current WorldScene from the simulation engine
+		/// </summary>
+		/// <returns>Current WorldScene</returns>
+		/// <exception cref="Exception">If the current scene is not an WorldScene, and exception will be thrown</exception>
 		public static WorldScene GetWorldScene()
 		{
 			if (GeneticEvolution.Engine.Scene.GetType() != typeof(WorldScene))
@@ -43,13 +56,28 @@ namespace NeuroEvolution
 			return scene;
 		}
 
+		/// <summary>
+		/// Our current Random class
+		/// </summary>
 		public static Random Random = new Random();
 
+		/// <summary>
+		/// Scale a Vector2 by d units
+		/// </summary>
+		/// <param name="v">the vector</param>
+		/// <param name="d">how many units to scale</param>
+		/// <returns></returns>
 		public static Vector2 ScaleVector(Vector2 v, float d)
 		{
 			return new Vector2(v.X * d, v.Y * d);
 		}
 
+		/// <summary>
+		/// Rotate a Vector2 by rad radians
+		/// </summary>
+		/// <param name="v">the vector</param>
+		/// <param name="rad">how many radians to rotate</param>
+		/// <returns></returns>
 		public static Vector2 RotateVector(Vector2 v, float rad)
 		{
 			return new Vector2(
@@ -58,48 +86,103 @@ namespace NeuroEvolution
 				);
 		}
 
+		/// <summary>
+		/// Get a random double number
+		/// </summary>
+		/// <param name="min">minum value</param>
+		/// <param name="max">maximum value</param>
+		/// <returns></returns>
 		public static double GetRandom(double min = 0, double max = 1)
 		{
 			return Random.NextDouble() * (max - min) + min;
 		}
 
+		/// <summary>
+		/// Get a random float number
+		/// </summary>
+		/// <param name="min">minum value</param>
+		/// <param name="max">maximum value</param>
+		/// <returns></returns>
 		public static float GetRandomFloat(float min = 0, float max = 0)
 		{
 			return (float)GetRandom(min, max);
 		}
 
+		/// <summary>
+		/// Get a random float number between zero and one
+		/// </summary>
+		/// <returns></returns>
 		public static float GetUnitRandomFloat()
 		{
 			return (float)GetRandom();
 		}
 
+		/// <summary>
+		/// Get the distance between two vectors
+		/// </summary>
+		/// <param name="v1">vector one</param>
+		/// <param name="v2">vector two</param>
+		/// <returns></returns>
 		public static float GetVectorDistance(Vector2 v1, Vector2 v2)
 		{
 			return (float)Math.Sqrt(Math.Pow((float)(v1.X - v2.X), 2) + Math.Pow((float)(v1.Y - v2.Y), 2));
 		}
 
+		/// <summary>
+		/// Scale a Rectangle
+		/// </summary>
+		/// <param name="rectange">the rectangle</param>
+		/// <param name="scale">how many units to scale</param>
+		/// <returns></returns>
 		public static Rectangle ScaleRectangle(Rectangle rectange, double scale)
 		{
 			return new Rectangle(rectange.X, rectange.Y, (int)(rectange.Width * scale), (int)(rectange.Height * scale));
 		}
 
+		/// <summary>
+		/// Sigmoid function
+		/// </summary>
+		/// <see cref="https://en.wikipedia.org/wiki/Sigmoid_function"/>
+		/// <param name="x">the x parameter</param>
+		/// <returns></returns>
 		public static float SigmoidFunction(float x)
 		{
 			return 1.0f / (1 + (float)Math.Exp((float)-x));
 		}
 
+		/// <summary>
+		/// Maximum value for the sigmoid function, so we can normalize the derivative
+		/// </summary>
 		public static readonly float SigmoidFunctionDiffMax = SigmoidFunctionDiff(0.0f);
+
+		/// <summary>
+		/// The derivative of the sigmoid function
+		/// </summary>
+		/// <param name="x">the x parameter</param>
+		/// <returns></returns>
 		public static float SigmoidFunctionDiff(float x)
 		{
 			float sigmoid = SigmoidFunction(x);
 			return sigmoid * (1.0f - sigmoid);
 		}
 
+		/// <summary>
+		/// Normalized sigmoid function (between zero and one)
+		/// </summary>
+		/// <param name="x"></param>
+		/// <returns></returns>
 		public static float SigmoidFunctionDiffNormalized(float x)
 		{
 			return SigmoidFunctionDiff(x) / SigmoidFunctionDiffMax;
 		}
 
+		/// <summary>
+		/// Mix two colors
+		/// </summary>
+		/// <param name="basecolor">the base color</param>
+		/// <param name="mixcolor">the mix color to blend</param>
+		/// <param name="v">ratio between the colors, value between 0 and 1</param>
+		/// <returns></returns>
 		internal static Color MixColor(Color basecolor, Color mixcolor, float v)
 		{
 			return new Color(

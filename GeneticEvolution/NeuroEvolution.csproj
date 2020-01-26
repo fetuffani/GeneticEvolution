@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExtensionsFNA.cs" />
+    <Compile Include="Genetics\Chromosome.cs" />
     <Compile Include="Genetics\DNA.cs" />
     <Compile Include="Genetics\GeneticAlgorithm.cs" />
     <Compile Include="Objects\Food.cs" />

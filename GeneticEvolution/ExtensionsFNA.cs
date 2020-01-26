@@ -6,6 +6,8 @@ using Microsoft.Xna.Framework.Graphics;
 namespace NeuroEvolution
 {
 	/// <summary>
+	/// FNA Extensions
+	/// <see cref="https://github.com/ellisonch/2d-xna-primitives"/>
 	/// </summary>
 	public static class Primitives2D
 	{

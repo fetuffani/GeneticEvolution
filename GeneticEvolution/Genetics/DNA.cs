@@ -1,7 +1,12 @@
 ﻿using NeuroEvolution;
 using System;
 
-public class DNA<T>
+interface IDNA
+{
+
+}
+
+public class DNA<T> : IDNA
 {
 	public T[] Genes { get; private set; }
 	public double Fitness { get; set; }

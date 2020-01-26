@@ -8,7 +8,7 @@ public class GeneticAlgorithm<T>
 	public int Generation { get; private set; }
 	public double BestFitness { get; private set; }
 	public double[] PopulationFitness { get; private set; }
-	public double MeanPopulationFitness { get { return PopulationFitness != null ? PopulationFitness.Sum() / PopulationFitness.Length : -999; } }
+	public double MeanPopulationFitness { get { return PopulationFitness.Sum() / PopulationFitness.Length; } }
 	public T[] BestGenes { get; private set; }
 
 	public int Elitism;
@@ -31,6 +31,7 @@ public class GeneticAlgorithm<T>
 		this.random = random;
 		this.dnaSize = dnaSize;
 		this.getRandomGene = getRandomGene;
+		PopulationFitness = new double[populationSize];
 
 		BestGenes = new T[dnaSize];
 
@@ -69,6 +70,8 @@ public class GeneticAlgorithm<T>
 				DNA<T> parent2 = ChooseParent();
 
 				DNA<T> child = parent1.Crossover(parent2);
+
+				child.Fitness = (parent1.Fitness + parent2.Fitness) / 2;
 
 				child.Mutate(MutationRate);
 

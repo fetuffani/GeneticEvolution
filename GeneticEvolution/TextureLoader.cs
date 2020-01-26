@@ -10,6 +10,9 @@ namespace NeuroEvolution
     //If you're loading raw .pngs from your engine, they haven't been pre multipled so you'll likely see artifacts when drawing your images.
     //This class will automatically pre multiply textures. If you later switch to using a Content Pipeline just set the usingPipeline bool to true so we don't premultiply the alpha again.
 
+	/// <summary>
+	/// Can't remember where I got it, sorry =/
+	/// </summary>
     public static class TextureLoader
     {
         const bool usingPipeline = false; 
