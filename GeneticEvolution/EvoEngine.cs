@@ -49,7 +49,7 @@ namespace NeuroEvolution
 			Content.RootDirectory = "Content";
 
 			graphicDeviceManager.PreferredBackBufferWidth = 1280;
-			graphicDeviceManager.PreferredBackBufferHeight = 900;
+			graphicDeviceManager.PreferredBackBufferHeight = 720;
 			//graphicDeviceManager.ToggleFullScreen();
 			graphicDeviceManager.ApplyChanges();
 		}

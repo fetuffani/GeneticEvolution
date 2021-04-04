@@ -184,7 +184,7 @@ namespace NeuroEvolution
 			}
 
 			GenePool = new GeneticAlgorithm<double>(
-				10, //Population size
+				20, //Population size
 				NeuralNetworkWeightsCount + AdditionalGenes, //DNA size, calculated by the network weights plus the additional genes
 				Extensions.Random,
 				getRandomGene,

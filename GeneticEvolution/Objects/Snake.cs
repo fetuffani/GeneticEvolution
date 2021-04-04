@@ -42,6 +42,7 @@ namespace NeuroEvolution
 			Scale = 0.5f;
 
 			Brain = new SnakeBrainGenetic(this);
+			//Brain = new SnakeBrain(this);
 			Energy = 10;
 		}
 
@@ -125,24 +126,27 @@ namespace NeuroEvolution
 			}
 		}
 
+		float accel_factor = (float)(250 / EvoEngine.FPS);
+		float brake_factor = 1.0001f; // (float)(252.4 / EvoEngine.FPS);
+
 		public void AccelerateUp()
 		{
-			SetVelocity(new Vector2(Velocity.X, Velocity.Y - 0.1f));
+			SetVelocity(new Vector2(Velocity.X/ brake_factor, Velocity.Y - accel_factor));
 		}
 
 		public void AccelerateDown()
 		{
-			SetVelocity(new Vector2(Velocity.X, Velocity.Y + 0.1f));
+			SetVelocity(new Vector2(Velocity.X / brake_factor, Velocity.Y + accel_factor));
 		}
 
 		public void AccelerateLeft()
 		{
-			SetVelocity(new Vector2(Velocity.X - 0.1f, Velocity.Y));
+			SetVelocity(new Vector2(Velocity.X - accel_factor, Velocity.Y / brake_factor));
 		}
 
 		public void AccelerateRight()
 		{
-			SetVelocity(new Vector2(Velocity.X + 0.1f, Velocity.Y));
+			SetVelocity(new Vector2(Velocity.X + accel_factor, Velocity.Y / brake_factor));
 		}
 
 		public void Accelerate()
