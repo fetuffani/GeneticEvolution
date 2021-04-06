@@ -14,6 +14,6 @@ O cérebro é composto por uma rede neural simples que recebe a informação dos
 
 A cada geração, os conceitos da genética e do melhor adaptado é utilizado onde apenas quem se adapta melhor passa seus genes, gerando assim indivíduos cada vez melhores em cumprir as tarefas designadas
 
-Se quiser saber mais detalhes, entre em [**contato**](https://github.com/fetuffani) comigo!
+Se quiser saber mais detalhes, entre em [**contato**](https://github.com/fetuffani) comigo! 
 
-![](engine.png)
+![](enginerun.gif)
